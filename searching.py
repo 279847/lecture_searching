@@ -1,3 +1,4 @@
+from operator import index
 from pathlib import Path
 import json
 
@@ -32,21 +33,45 @@ def linear_search(sekvence, number):
         if value == number:
             positions.append(index)
 
-    if number not in sekvence:
-        return None
-    else:
-        return {
+    return {
         "positions": positions,
         "count": len(positions)
     }
 
+def binary_search(num_list, number):
+    left = 0
+    right = len(num_list) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+
+        if num_list[mid] == number:
+            return mid
+        elif num_list[mid] < number:
+            left = mid + 1
+        elif num_list[mid] > number:
+            right = mid - 1
+
+    return None
+
+
+
+
+
+
+
+
 
 def main():
     sequential_data = read_data("sequential.json", "unordered_numbers")
-    print(sequential_data)
-    number = -10
+    sequential_data_1 = read_data("sequential.json", "ordered_numbers")
+    print(sequential_data_1)
+    number = 8
     dict_pos_count = linear_search(sequential_data, number)
     print(dict_pos_count)
+    indx = binary_search(sequential_data_1, number)
+    print(indx)
+
 if __name__ == "__main__":
     main()
 
