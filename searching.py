@@ -32,7 +32,10 @@ def linear_search(sekvence, number):
         if value == number:
             positions.append(index)
 
-    return {
+    if number not in sekvence:
+        return None
+    else:
+        return {
         "positions": positions,
         "count": len(positions)
     }
@@ -41,7 +44,7 @@ def linear_search(sekvence, number):
 def main():
     sequential_data = read_data("sequential.json", "unordered_numbers")
     print(sequential_data)
-    number = 3
+    number = -10
     dict_pos_count = linear_search(sequential_data, number)
     print(dict_pos_count)
 if __name__ == "__main__":
