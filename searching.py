@@ -1,6 +1,8 @@
-from operator import index
 from pathlib import Path
 import json
+import time
+import matplotlib.pyplot as plt
+import generators
 
 
 def read_data(file_name, field):
@@ -55,22 +57,53 @@ def binary_search(num_list, number):
     return None
 
 
-
-
-
-
-
-
-
 def main():
     sequential_data = read_data("sequential.json", "unordered_numbers")
+
     sequential_data_1 = read_data("sequential.json", "ordered_numbers")
+
     print(sequential_data_1)
+
     number = 8
+
     dict_pos_count = linear_search(sequential_data, number)
     print(dict_pos_count)
+
     indx = binary_search(sequential_data_1, number)
     print(indx)
+
+    sizes = [100, 500, 1000, 5000, 10000]
+
+    linear_times = []
+    binary_times = []
+
+    for size in sizes:
+        data_unordered = generators.unordered_sequence(size)
+        target = data_unordered[0]
+
+        start = time.perf_counter()
+        linear_search(data_unordered, target)
+        end = time.perf_counter()
+        linear_times.append(end - start)
+
+        data_ordered = generators.ordered_sequence(size)
+        target = data_ordered[0]
+
+        start = time.perf_counter()
+        binary_search(data_ordered, target)
+        end = time.perf_counter()
+        binary_times.append(end - start)
+
+
+    plt.plot(sizes, linear_times)
+    plt.plot(sizes, binary_times)
+
+    plt.xlabel("Velikost vstupu")
+    plt.ylabel("Čas (s)")
+    plt.title("Porovnání lineárního a binárního vyhledávání")
+    plt.show()
+
+# Výsledky odpovídají asymptotické složitosti. Sekvenční vyhledávání roste lineárně a binární je téměř konstantní
 
 if __name__ == "__main__":
     main()
